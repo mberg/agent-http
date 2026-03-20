@@ -2,6 +2,8 @@
 
 An HTTP API for Claude Code, built as a native [MCP channel](https://code.claude.com/docs/en/channels-reference). Send messages to Claude Code over HTTP and get responses back — no terminal screen-scraping, no TUI parsing. Messages flow through Claude's native channel protocol.
 
+The API is compatible with [agentapi](https://github.com/coder/agentapi) (`POST /message`, `GET /messages`, `GET /status`, `GET /events`), so it can serve as a drop-in replacement for agentapi in projects that only need Claude Code support.
+
 ## How it works
 
 agent-http is an MCP channel server that Claude Code spawns as a subprocess. It bridges HTTP and Claude Code's internal messaging system:
@@ -11,7 +13,14 @@ agent-http is an MCP channel server that Claude Code spawns as a subprocess. It 
 3. Claude processes the message and calls the `reply` tool to send responses back
 4. Responses are stored in conversation history and broadcast to SSE listeners
 
-Unlike tools like [agentapi](https://github.com/coder/agentapi) that screen-scrape a terminal emulator, agent-http uses Claude Code's native channel system — messages are exact, not approximated from terminal diffs.
+Unlike agentapi, which wraps any CLI agent by running it in a virtual terminal and parsing screen output, agent-http uses Claude Code's native channel system. Messages are exact — no terminal diffing, no TUI artifact stripping, no heuristics that break when the CLI updates.
+
+| | agentapi | agent-http |
+|---|---|---|
+| Integration | Screen-scrapes a terminal emulator | Native MCP channel protocol |
+| Message fidelity | Approximated from terminal diffs | Exact |
+| Multi-agent support | Claude, Aider, Goose, Codex, etc. | Claude Code only |
+| Fragility | Can break on TUI changes | Stable — uses documented MCP contract |
 
 ## Setup
 
@@ -96,6 +105,16 @@ A simple web chat interface is available at:
 ```
 http://localhost:3284/chat
 ```
+
+### Chat UI
+
+A web chat interface is included for testing and demos:
+
+```
+http://localhost:3284/chat
+```
+
+It connects to the same API endpoints — messages sent from the chat UI show up in `/messages` and vice versa.
 
 ### Health check
 
