@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "http-router": {
+      "command": "bun",
+      "args": ["./http.ts"]
+    }
+  }
+}
