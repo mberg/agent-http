@@ -40,6 +40,19 @@ claude --dangerously-load-development-channels server:http-router
 
 Claude Code reads `.mcp.json`, spawns the server, and the HTTP API starts on port 3284.
 
+To use a custom port, update `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "http-router": {
+      "command": "bun",
+      "args": ["./http.ts", "--port", "8080"]
+    }
+  }
+}
+```
+
 ## API
 
 ### Send a message
@@ -124,9 +137,12 @@ curl localhost:3284/health
 
 ## Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CLAUDE_HTTP_PORT` | `3284` | Port the HTTP server listens on |
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--port` flag | `3284` | Set via `.mcp.json` args: `["./http.ts", "--port", "8080"]` |
+| `CLAUDE_HTTP_PORT` env | `3284` | Set via `.mcp.json` env or shell environment |
+
+Priority: `--port` flag > `CLAUDE_HTTP_PORT` env > `3284` default.
 
 ## Programmatic usage
 

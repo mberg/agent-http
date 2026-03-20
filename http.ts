@@ -6,7 +6,9 @@ import {
   CallToolRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 
-const PORT = Number(process.env.CLAUDE_HTTP_PORT) || 3284;
+// Port from --port arg, env var, or default
+const portArg = process.argv.find((_, i) => process.argv[i - 1] === "--port");
+const PORT = Number(portArg || process.env.CLAUDE_HTTP_PORT) || 3284;
 
 // ── Types ──
 
