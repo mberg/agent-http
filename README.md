@@ -1,4 +1,4 @@
-# agent-http
+# Agent HTTP
 
 An HTTP API for Claude Code, built as a native [MCP channel](https://code.claude.com/docs/en/channels-reference). Send messages to Claude Code over HTTP and get responses back — no terminal screen-scraping, no TUI parsing. Messages flow through Claude's native channel protocol.
 
